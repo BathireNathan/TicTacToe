@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tic Tac Toe</title>
+</head>
+
+<body>
+
+    <style>
+        body {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #333;
+            color: #ffffff;
+            padding: 30px;
+            box-shadow: 5px 10px;
+        }
+
+        .row {
+            border-bottom: 4px solid gray;
+            height: 90px;
+            width: 360px;
+            display: flex;
+        }
+
+        .col {
+            border-right: 4px solid gray;
+            width: 120px;
+            color: #ffffff;
+            font-size: 40px;
+            font-weight: bolder;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .last {
+            border-bottom: 0 !important;
+            border-right: 0 !important;
+        }
+
+        .head {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+    </style>
+    <div class="container">
+        <div class="head">
+            <h1 id="headh">Tic Tac Toe</h1>
+        </div>
+
+        <div>
+            <div class="row">
+                <div id="1" class="col"></div>
+                <div id="2" class="col"></div>
+                <div id="3" class="col last"></div>
+            </div>
+            <div class="row">
+                <div id="4" class="col"></div>
+                <div id="5" class="col"></div>
+                <div id="6" class="col last"></div>
+            </div>
+            <div class="row last">
+                <div id="7" class="col"></div>
+                <div id="8" class="col"></div>
+                <div id="9" class="col last"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTurn = "X";
+
+        let winningOptions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]];
+
+        let allCols = document.querySelectorAll(".col");
+
+        let initilize = () => {
+            allCols.forEach(e => {
+                createClickListener(e);
+            });
+        }
+
+        let checkForWinner = () => {
+            let winFlag = false;
+            let selectedIds = [];
+            allCols.forEach(e => {
+                if (e.innerHTML == currentTurn)
+                    selectedIds.push(Number(e.id));
+            });
+            console.log(selectedIds);
+            winningOptions.every(arr => {
+                winFlag = true;
+                arr.every(a => {
+                    if (!selectedIds.includes(a)) {
+                        winFlag = false;
+                        return false;
+                    }
+                    return true;
+                });
+                if (winFlag)
+                    return false;
+                return true;
+            });
+            return winFlag;
+        }
+
+        let resetAllDets = function () {
+            alert(currentTurn + " Won ! :-D ");
+
+            allCols.forEach(e => {
+                e.innerHTML = "";
+
+            });
+            currentTurn = "X";
+            document.getElementById("headh").innerHTML = "Tic Tac Toe - " + currentTurn + " Turn";
+        }
+
+        let createClickListener = element => {
+            element.addEventListener("click", function (e) {
+                let alreadyVal = e.target.innerHTML;
+                console.log(alreadyVal);
+
+                if (alreadyVal.trim() == "") {
+                    e.target.innerHTML = currentTurn;
+
+                    if (checkForWinner()) {
+                        resetAllDets();
+                    }
+                    if (currentTurn == "X")
+                        currentTurn = "O";
+                    else
+                        currentTurn = "X";
+                    document.getElementById("headh").innerHTML = "Tic Tac Toe - " + currentTurn + " Turn";
+                }
+            });
+        }
+
+        (function () {
+            initilize();
+        })();
+    </script>
+</body>
+
+</html>
